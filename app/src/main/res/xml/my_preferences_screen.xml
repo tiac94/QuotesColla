@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Configuració de les quotes">
+    <!-- GENER -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota de Gener"
+        android:key="gener"
+        android:title="Gener"
+        android:inputType="number" />
+    <!-- FEBRER -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota de Febrer"
+        android:key="febrer"
+        android:inputType="number"
+        android:title="Febrer" />
+    <!-- MARÇ -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota de Març"
+        android:key="març"
+        android:inputType="number"
+        android:title="Març" />
+    <!-- ABRIL -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota d'Abril"
+        android:key="abril"
+        android:inputType="number"
+        android:title="Abril" />
+    <!-- MAIG -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota de Maig"
+        android:key="maig"
+        android:inputType="number"
+        android:title="Maig" />
+    <!-- JUNY -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota de Juny"
+        android:key="juny"
+        android:inputType="number"
+        android:title="Juny" />
+    <!-- JULIOL -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota de Juliol"
+        android:key="juliol"
+        android:inputType="number"
+        android:title="Juliol" />
+    <!-- AGOST -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota d'Agost"
+        android:key="agost"
+        android:inputType="number"
+        android:title="Agost" />
+    <!-- SEPTEMBRE -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota de Septembre"
+        android:key="septembre"
+        android:inputType="number"
+        android:title="Septembre" />
+    <!-- OCTUBRE -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota d'Octubre"
+        android:key="octubre"
+        android:inputType="number"
+        android:title="Octubre" />
+    <!-- NOVEMBRE -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota de Novembre"
+        android:key="novembre"
+        android:inputType="number"
+        android:title="Novembre" />
+    <!-- DESEMBRE -->
+    <EditTextPreference
+        android:dialogTitle="Introduïx la quota de Desembre"
+        android:key="desembre"
+        android:inputType="number"
+        android:title="Desembre" />
+    </PreferenceCategory>
+</PreferenceScreen>

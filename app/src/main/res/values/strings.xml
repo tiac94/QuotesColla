@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Colla</string>
+    <string name="action_settings">Surtir</string>
+    <string name="action_configuracio">Configuració de les quotes</string>
+</resources>
