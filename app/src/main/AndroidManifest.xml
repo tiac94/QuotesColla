@@ -15,7 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".MenuContactesActivity"></activity>
+        <activity android:name=".DadesContactesActivity"></activity>
+        <activity android:name=".MyPreferencesActivity"></activity>
+        <activity android:name=".QuotesActivity"></activity>
     </application>
 
 </manifest>

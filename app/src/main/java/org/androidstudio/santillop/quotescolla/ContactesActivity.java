@@ -1,11 +1,13 @@
 package org.androidstudio.santillop.quotescolla;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +32,7 @@ public class ContactesActivity extends AppCompatActivity {
         toolbar.setTitle("Contactes");
         setSupportActionBar(toolbar);
 
+        //reiniciarActivity(this);
         //Cridem funcio consultaMembres per omplir la llista de membres
         consultaMembres();
 
@@ -67,7 +70,7 @@ public class ContactesActivity extends AppCompatActivity {
         SQLiteGestor bdg = new SQLiteGestor(this,"Colla.sqlite",null,1);
         SQLiteDatabase bd = bdg.getReadableDatabase();
         //Fem la consulta dels membres
-        Cursor rs = bd.rawQuery("SELECT * FROM membre",null);
+        Cursor rs = bd.rawQuery("SELECT * FROM membre ORDER BY nom, cognoms",null);
 
         while (rs.moveToNext()){
             //Desem en variables les dades de cada membre
@@ -82,6 +85,13 @@ public class ContactesActivity extends AppCompatActivity {
         rs.close(); //Tanquem la consulta
         bd.close(); //Tanquem la BBDD
         bdg.close();
+        Log.d("TAG", ""+membres.size());
+        //Log.d("TAG", membres.get(1).getNom());
+    }
+    public void onResume() {
+        super.onResume();
+        //Cridem funcio consultaMembres per omplir la llista de membres
+        consultaMembres();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)

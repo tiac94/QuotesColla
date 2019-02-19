@@ -42,7 +42,7 @@ public class DadesContactesActivity extends AppCompatActivity {
         //text.setText("Dades de " + nomExtra + " " + cognomsExtra);
         //Connectem a la BBDD
         SQLiteGestor bdg = new SQLiteGestor(this,"Colla.sqlite",null,1);
-        SQLiteDatabase bd = bdg.getReadableDatabase();
+        SQLiteDatabase bd = bdg.getWritableDatabase();
         //Fem la consulta per traure el correu i telefon del membre
         Cursor rs = bd.rawQuery("SELECT * FROM membre WHERE nom = '" + nomExtra
                 + "' AND cognoms = '" + cognomsExtra + "'",null);

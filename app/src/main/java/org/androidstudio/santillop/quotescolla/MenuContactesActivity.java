@@ -1,22 +1,41 @@
 package org.androidstudio.santillop.quotescolla;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+
+
+
 /**
  * Created by santi on 11/11/17.
  */
 
 public class MenuContactesActivity extends AppCompatActivity {
+    int IDExtra;
+    //reinicia una Activity
+    public  void reiniciarActivity(Activity actividad){
+        Intent intent=new Intent();
+        intent.setClass(actividad, actividad.getClass());
+        intent.putExtra("nom", IDExtra);
+        //llamamos a la actividad
+        actividad.startActivity(intent);
+        //finalizamos la actividad actual
+        actividad.finish();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +50,7 @@ public class MenuContactesActivity extends AppCompatActivity {
         //Arrepleguem el nom i cognoms de l'altra activitat
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        final int IDExtra = extras.getInt("ID");
+        IDExtra = extras.getInt("ID");
         final String nomExtra = extras.getString("nom");
         final String cognomsExtra = extras.getString("cognoms");
         toolbar.setTitle("Menu de " + nomExtra);
@@ -59,42 +78,89 @@ public class MenuContactesActivity extends AppCompatActivity {
         borrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Connectem al gestor de la BBDD en mode escriptura
-                SQLiteGestor bdg = new SQLiteGestor(getApplicationContext(),"Colla.sqlite",null,1);
-                SQLiteDatabase bd = bdg.getWritableDatabase();
-                bd.execSQL("DELETE FROM membre WHERE membre.ID = " + IDExtra);
-                bd.execSQL("DELETE FROM quota WHERE quota.id_membre = " + IDExtra);
-                bd.close();
-                bdg.close();
-                final ProgressDialog dialog = ProgressDialog.show(MenuContactesActivity.this, "S'està esborrant l'usuari", "Espera si us plau...", true);
-                new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            //---simulate doing something lengthy---
-                            Thread.sleep(5000);
-                            //---dismiss the dialog---
-                            dialog.dismiss();
+                //Cridem a la funció diàleg
+                createDialog(IDExtra).show();
 
-                            MenuContactesActivity.this.runOnUiThread(new Runnable() {
-                                public void run() {
-                                    try {
-                                        Thread.sleep(500);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    Toast.makeText(MenuContactesActivity.this, "L'usuari s'ha esborrat amb èxit!", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                }
-                            });
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
-
+                //finish();
+                //reiniciarActivity(MenuContactesActivity.this);
             }
         });
+    }
+    public Dialog createDialog(final int ID) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_warning_black_24dp)
+                .setTitle("Esta vosté segur de tirar al carrer aquest membre?")
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                //Si l'usuari prem l'opcio OK s'esborrarà el membre
+                                esborraMembre(ID);
+                            }
+                        }
+                )
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Toast.makeText(getBaseContext(),
+                                        "Esborrament de membre cancel·lat!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), ContactesActivity.class);
+                                intent.putExtra("cancel","cancel");
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                );
+        return builder.create();
+    }
+    public void esborraMembre(int ID){
+        //Connectem al gestor de la BBDD en mode escriptura
+        SQLiteGestor bdg = new SQLiteGestor(getApplicationContext(),"Colla.sqlite",null,1);
+        SQLiteDatabase bd = bdg.getWritableDatabase();
+
+        bd.execSQL("DELETE FROM membre WHERE membre.ID = " + ID);
+        bd.execSQL("DELETE FROM quota WHERE quota.id_membre = " + ID);
+        bd.close();
+        bdg.close();
+
+        final ProgressDialog dialog = ProgressDialog.show(MenuContactesActivity.this, "S'està esborrant l'usuari", "Espera si us plau...", true);
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    //---simulate doing something lengthy---
+                    Thread.sleep(5000);
+                    //---dismiss the dialog---
+                    dialog.dismiss();
+
+                    MenuContactesActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Toast.makeText(MenuContactesActivity.this, "L'usuari s'ha esborrat amb èxit!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), ContactesActivity.class);
+                            startActivity(intent);
+                            finish();
+
+
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == event.KEYCODE_BACK) {
+            Intent intent = new Intent(getApplicationContext(), ContactesActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
